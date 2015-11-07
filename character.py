@@ -1,5 +1,6 @@
 import time
 import random
+from Weaponry import * 
 class Character:
 
 	#leagilistic attributes
@@ -19,6 +20,7 @@ class Character:
 	
 	#combat related attributes
 	health = 300; #default health	
+	weapon = Weapon();
 
 	def __init__(self, xPos, yPos, isAlive):
 		#assign legalistic attributes
@@ -87,7 +89,16 @@ class Character:
 		self.yPos = y;
 		
 #-------------------------------------------------------------------------------------------------------------------------------------------	
+	#weapon stuff
+
+	def testWep(self):
+		weapon = Bow();
+		print(weapon.weaponMod());
+		print(weapon.rangeMod());
+		print(weapon.speedMod());
+
+
 x = Character(0,0,True);
-x.printAttr();
+x.testWep();
 		
 
