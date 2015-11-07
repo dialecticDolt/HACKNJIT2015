@@ -38,7 +38,7 @@ while True:
    print ('Got connection from', addr)
    # create our message to send to server
    msg = 'Server: You are connected'
-
+   print('hey')
    # we overwrite the msg variable with a message from the client. the
    # message is decoded and printed on the server
    msg = client.recv(1024).decode()
