@@ -24,7 +24,7 @@ class shortSword(Weapon):
 
 	damage = 4;
 	weaponRange = 2;
-	agility = 1;
+	agility = 3;
 
 	def __init__(self):
 		Weapon.__init__(self, self.damage, self.weaponRange, self.agility);
@@ -33,7 +33,7 @@ class longSword(Weapon):
 	
 	damage = 6;
 	weaponRange = 3;
-	agility = 3;
+	agility = 1;
 	
 	def __init__(self):
 		Weapon.__init__(self, self.damage, self.weaponRange, self.agility);
@@ -70,6 +70,34 @@ class Dagger(Weapon):
 	def __init__(self):
 		Weapon.__init__(self, self.damage, self.weaponRange, self.agility);
 
+class Armor():
+	armorBonus = 0;
+	armorCap = 100;
 
+	def __init__(self):
+		armorBonus = 0;
+		armorCap = 100;
+	
+	def addArmor(self):
+		if self.armorBonus < 0:
+			self.armorBonus = 0;
+		if self.armorBonus != self.armorCap:
+			if(self.armorBonus >= self.armorCap-25):
+				self.armorBonus = 100;
+			else:
+				self.armorBonus = self.armorBonus + 25;
+
+	def damageArmor(self, damage):
+		if self.armorBonus < 0:
+			self.armorBonus = 0;
+			
+		self.armorBonus = self.armorBonus - damage;
+		return (self.armorBonus > 0: 0 ? self.armorBonus);
+	
+	def getArmor(self):
+		if self.armorBonus < 0:
+			self.armorBonus = 0;
+		return self.armorBonus;
+			
 
 

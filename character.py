@@ -16,11 +16,11 @@ class Character:
 	luck = 0;
 	intelligence = 0;
 	wisdom = 0;
-	constitution = 0;
 	
 	#combat related attributes
 	health = 300; #default health	
 	weapon = Weapon();
+	armor = Armor();
 
 	def __init__(self, xPos, yPos, isAlive):
 		#assign legalistic attributes
@@ -35,7 +35,7 @@ class Character:
 		self.luck = random.randint(1,10);
 		self.intelligence = random.randint(1,10);
 		self.wisdom = random.randint(1,10);
-		self.constitution = random.randint(1,10);
+		self.health = 300;
 
 	def printAttr(self):
 		#quickly prints all attributes
@@ -90,15 +90,53 @@ class Character:
 		
 #-------------------------------------------------------------------------------------------------------------------------------------------	
 	#weapon stuff
+	
+	def pickUpWeapon(self,newWeapon):
+		self.weapon = newWeapon
+	
+	def dropWeapon(self):
+		self.weapon = Weapon();
 
-	def testWep(self):
-		weapon = Bow();
-		print(weapon.weaponMod());
-		print(weapon.rangeMod());
-		print(weapon.speedMod());
+		
+	def attack(self):
+		return self.strength*self.weapon.weaponMod();
+	
+	def attackSpeed(self):
+		#attackSpeed will be 1-30. 
+		#dexterity and weapon agility play a role. This is essentially a measure of how fast one can attack
+		return self.dexterity*self.weapon.speedMod();
+	
+	def attackRange(self):
+		return self.weapon.rangeMod();
 
+	def damaged(self, damageTaken):
+		self.health = self.health + self.armor.damageArmor(damageTaken); #only returns a value if damage exceeds armor. that value should always be negative
+
+	
+	def heal(self, damageHealed):
+		self.health = self.health + damagedHealed;
+	
+	def getHealth(self):
+		return self.health;
+	
+	def getArmor(self):
+		return self.armor.getArmor();
+
+	def addArmor(self):
+		self.armor.addArmor();
+
+	
+	
 
 x = Character(0,0,True);
-x.testWep();
+x.addArmor();
+x.addArmor();
+x.addArmor();
+x.addArmor();
+x.damaged(125);
+print(x.getArmor());
+print(x.getHealth());
+
+
 		
 
