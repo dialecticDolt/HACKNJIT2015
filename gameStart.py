@@ -25,10 +25,16 @@ import socket
 import sys
 import os
 import pickle
+<<<<<<< HEAD
+=======
+import pygame
+import pygcurse
+import msvcrt
+>>>>>>> refs/remotes/origin/Networking
 import time
 
 endFlag = False;
-isServer = False;
+isServer = True;
 updateFlag = False;
 turnFlag = True;
 multiFlag = False;
@@ -65,6 +71,7 @@ class NJITHack(threading.Thread):
         global endFlag
         global gState
         global lockTurn
+<<<<<<< HEAD
         """
         STARTING MENU
         """
@@ -93,6 +100,74 @@ class NJITHack(threading.Thread):
         -Invetory
         -Set End Turn Flag
         """
+=======
+        exitFlag = True;
+        reallyexitFlag = True;
+        State = 1;
+        while reallyexitFlag
+            while exitFlag:
+                """
+                STARTING MENU
+                """
+                if State == 1:
+                    print(" _   _      _ _____ _______   _    _          _____ _  __".center(100));
+                    print("| \ | |    | |_   _|__   __| | |  | |   /\   / ____| |/ /".center(100));
+                    print("|  \| |    | | | |    | |    | |__| |  /  \ | |    | ' / ".center(100));
+                    print("| . ` |_   | | | |    | |    |  __  | / /\ \| |    |  <  ".center(100));
+                    print("| |\  | |__| |_| |_   | |    | |  | |/ ____ \ |____| . \ ".center(100));
+                    print("|_| \_|\____/|_____|  |_|    |_|  |_/_/    \_\_____|_|\_\ ".center(100));
+                    print("==========================================================".center(100));
+                    print("Created by Josef Mohrenweiser, Tyler Shuhnicki, and William Ruys".center(100));
+                    print("****Single-Player".center(100));
+                    print("----Multi-Player".center(100));
+                if State == 2:
+                    print(" _   _      _ _____ _______   _    _          _____ _  __".center(100));
+                    print("| \ | |    | |_   _|__   __| | |  | |   /\   / ____| |/ /".center(100));
+                    print("|  \| |    | | | |    | |    | |__| |  /  \ | |    | ' / ".center(100));
+                    print("| . ` |_   | | | |    | |    |  __  | / /\ \| |    |  <  ".center(100));
+                    print("| |\  | |__| |_| |_   | |    | |  | |/ ____ \ |____| . \ ".center(100));
+                    print("|_| \_|\____/|_____|  |_|    |_|  |_/_/    \_\_____|_|\_\ ".center(100));
+                    print("==========================================================".center(100));
+                    print("Created by Josef Mohrenweiser, Tyler Shuhnicki, and William Ruys".center(100));
+                    print("----Single-Player".center(100));
+                    print("****Multi-Player".center(100));
+                
+                if State == 3:
+                    name = input("Enter your Name".center(100));
+
+
+
+
+
+            """
+            Initialize Character
+            """
+
+            """
+            Create Map & Initialize World Entities
+            """
+
+            """Create GameState"""
+
+            """
+            Start Server Listening
+            -Server starts waiting
+            -Client will send signal if turnFlag is set
+            -Server will send response on its turnFlag & recieve
+            -
+            """
+
+            """
+            All Actions and End Turn
+            -All interactions
+            -Invetory
+            -Set End Turn Flag
+            """
+            #lockEnd.acquire()
+            endFlag = 1;
+            #lockEnd.release();
+        return;
+>>>>>>> refs/remotes/origin/Networking
 
 class Network(threading.Thread):
     def __init__(self):
@@ -124,17 +199,25 @@ class Network(threading.Thread):
                 stateBuffer.append(pickle.loads(pickledState));
                 lockTurn.acquire();
                 if turnFlag:
+                    lockState.acquire();
                     tempState = stateBuffer.pop();
                     """tempState = tempState.update();"""
                     dataString = pickle.dumps(tempState)
                     client.send(dataString.encode())
+<<<<<<< HEAD
                 lockTurn.release();
                 lockEnd.acquire();
+=======
+                    lockState.release();
+                lockTurn.release();
+>>>>>>> refs/remotes/origin/Networking
                 if endFlag:
-                    lockEnd.release();
                     client.close();
                     break;
+<<<<<<< HEAD
                 lockEnd.release();
+=======
+>>>>>>> refs/remotes/origin/Networking
 
         else:
 
@@ -142,18 +225,29 @@ class Network(threading.Thread):
             while True:
                 lockTurn.acquire();
                 if turnFlag:
+                    lockState.acquire()
                     s.send(dataString.encode());
                     pickledState = s.recv(1024).decode();
                     stateBuffer.append(pickle.loads(pickledState));
                     turnFlag = False;
+                    lockState.release();
                 lockTurn.release();
-                lockEnd.acquire();
                 if endFlag:
+<<<<<<< HEAD
                     lockEnd.release();
                     break;
                 lockEnd.release();
+=======
+                    break;
+                return;
+>>>>>>> refs/remotes/origin/Networking
 
 thread1 = NJITHack();
 thread2 = Network();
 thread1.start();
 thread2.start();
+<<<<<<< HEAD
+=======
+#print("Done")
+sys.exit();
+>>>>>>> refs/remotes/origin/Networking
