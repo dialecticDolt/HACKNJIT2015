@@ -25,8 +25,8 @@ import socket
 import sys
 import os
 import pickle
-import pygame
-import pygcurse
+#import pygame
+#import pygcurse
 import msvcrt
 import time
 
@@ -122,7 +122,7 @@ class NJITHack(threading.Thread):
                     time.sleep(0.5);
 
             if State == 3:
-                s = string(input("Enter your Name: "));
+                s = str(raw_input("Enter your Name: "));
 
 
 

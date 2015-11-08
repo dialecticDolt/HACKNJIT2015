@@ -106,11 +106,9 @@ class AI():
 	def chaseEnemy(self, enemy):
 		if(self.inRangeX(enemy.getPositionX()) and self.inRangeY(enemy.getPositionY())):
 			enemy.damaged(self.weapon.weaponMod() * self.strength);
-			print("attacked");
 
 		else:
 			#todo path to enenmy
-			print("path to enemy")
 
 	def shouldAttack(self, enemy):
 		minimumExtraDistance = 3;
@@ -135,7 +133,6 @@ class AI():
 			self.chaseEnemy(enemy);
 		else:
 			#todo path to return spot
-			print("path to return");
 
 			
 
