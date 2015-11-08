@@ -11,7 +11,7 @@ Initialize Character
 Create Map
 loop:
     Initialize World Entities
-    Wait for Keyboard Input 
+    Wait for Keyboard Input
     Do Actions
     End turn
     if server wait
@@ -24,7 +24,7 @@ import threading
 import socket
 import sys
 import os
-import pickle 
+import pickle
 import time
 
 endFlag = False;
@@ -47,7 +47,7 @@ stateBuffer = []; """Store all the turns that have happened locally"""
 
 class gameState:
     """This is what is communicated across the network"""
-    def __init__(self, eList, wList): 
+    def __init__(self, eList, wList):
         self.turnNumber = currentTurn;    """Attach Turn information"""
         self.eList = eList;               """State of all entities"""
         self.wList = wList;               """State of all world things"""
@@ -68,17 +68,17 @@ class NJITHack(threading.Thread):
         """
         STARTING MENU
         """
-            
+
         """
         Initialize Character
         """
-            
+
         """
         Create Map & Initialize World Entities
         """
-            
+
         """Create GameState"""
-        
+
         """
         Start Server Listening
         -Server starts waiting
@@ -86,18 +86,18 @@ class NJITHack(threading.Thread):
         -Server will send response on its turnFlag & recieve
         -
         """
-        
+
         """
         All Actions and End Turn
         -All interactions
-        -Invetory 
+        -Invetory
         -Set End Turn Flag
         """
- 
+
 class Network(threading.Thread):
     def __init__(self):
         super(Network, self).__init__()
-        
+
     def run(self):
         global turnFlag
         global stateBuffer
@@ -108,8 +108,8 @@ class Network(threading.Thread):
         global lockEnd
        # msg = "";
         s = socket.socket();
-        dataString = pickle.dumps(gState);   #what ever state to send    
-        
+        dataString = pickle.dumps(gState);   #what ever state to send
+
         if isServer:
             #try:
             s.bind(("", PORT))
@@ -128,16 +128,16 @@ class Network(threading.Thread):
                     """tempState = tempState.update();"""
                     dataString = pickle.dumps(tempState)
                     client.send(dataString.encode())
-                lockTurn.release(); 
+                lockTurn.release();
                 lockEnd.acquire();
                 if endFlag:
                     lockEnd.release();
                     client.close();
                     break;
                 lockEnd.release();
-                   
+
         else:
-            
+
             s.connect((HOST, PORT));
             while True:
                 lockTurn.acquire();
@@ -150,11 +150,10 @@ class Network(threading.Thread):
                 lockEnd.acquire();
                 if endFlag:
                     lockEnd.release();
-                    break;   
+                    break;
                 lockEnd.release();
-                        
+
 thread1 = NJITHack();
 thread2 = Network();
 thread1.start();
-thread2.start();       
-        
+thread2.start();
