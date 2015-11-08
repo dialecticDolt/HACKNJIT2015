@@ -122,7 +122,7 @@ class NJITHack(threading.Thread):
                     time.sleep(0.5);
 
             if State == 3:
-                s = string(input("Enter your Name".center(100)));
+                s = string(input("Enter your Name: "));
 
 
 
