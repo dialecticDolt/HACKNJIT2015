@@ -47,19 +47,18 @@ class Character:
     weapon = Weapon();
     armor = Armor();
 
-    def __init__(self, name, isAlive, myWorld, strength = 0, dexterity = 0, charisma = 0, luck = 0, intelligence = 0, wisdom = 0):
+    def __init__(self, name, isAlive, strength = 0, dexterity = 0, charisma = 0, luck = 0, intelligence = 0, wisdom = 0):
         #assign legalistic attributes
         self.name = name;
         while True:
-            x = random.randint(0,myWorld.floorx)
-            y = random.randint(0,myWorld.floory)
-            if(myWorld.floors[0].inRoom(x,y)[1]):
+            x = random.randint(0,NJIT.floorx)
+            y = random.randint(0,NJIT.floory)
+            if(NJIT.floors[0].inRoom(x,y)[1]):
                 break
-        myWorld.floors[0].add(x,y,'@')
+        NJIT.floors[0].add(x,y,'@')
         self.xpos = x
         self.ypos = y
         self.isAlive = isAlive;
-        self.myWorld = myWorld
         self.currentFloor = 0;
         self.charID = self.charID * reduce(lambda x, y: (x<<8)+ord(y), self.name, 0) #not really sure what this lamba does. it converts the name into a randomish number
 
@@ -84,54 +83,59 @@ class Character:
     #moving functions
 
     def moveUp(self):
-        if (self.ypos+1 < self.myWorld.floory):
-            if (self.myWorld.floors[self.currentFloor].movableSpace(self.xpos, self.ypos+1)):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(self.xpos, self.ypos+1, '@')
+        if (self.ypos+1 < NJIT.floory):
+            if (NJIT.floors[self.currentFloor].movableSpace(self.xpos, self.ypos+1)):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos, self.ypos+1, '@')
                 self.ypos = self.ypos + 1
     def moveDown(self):
         if (self.ypos-1 >= 0):
-            if (self.myWorld.floors[self.currentFloor].movableSpace(self.xpos, self.ypos-1)):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(self.xpos, self.ypos-1, '@')
+            if (NJIT.floors[self.currentFloor].movableSpace(self.xpos, self.ypos-1)):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos, self.ypos-1, '@')
                 self.ypos = self.ypos - 1
     def moveLeft(self):
         if (self.xpos-1 >= 0):
-            if (self.myWorld.floors[self.currentFloor].movableSpace(self.xpos-1, self.ypos)):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(self.xpos-1, self.ypos, '@')
+            if (NJIT.floors[self.currentFloor].movableSpace(self.xpos-1, self.ypos)):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos-1, self.ypos, '@')
                 self.xpos = self.xpos - 1
     def moveRight(self):
-        if (self.xpos+1 < self.myWorld.floorx):
-            if (self.myWorld.floors[self.currentFloor].movableSpace(self.xpos+1, self.ypos)):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(self.xpos+1, self.ypos, '@')
+        if (self.xpos+1 < NJIT.floorx):
+            if (NJIT.floors[self.currentFloor].movableSpace(self.xpos+1, self.ypos)):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos+1, self.ypos, '@')
                 self.xpos = self.xpos + 1
     def update(self):
+<<<<<<< Updated upstream
         self.myWorld.floors[self.currentFloor].drawFloor()
 
+=======
+        NJIT.floors[self.currentFloor].drawFloor()
+            
+>>>>>>> Stashed changes
     def getPositionX(self):
         return self.xpos;
 
     def setPositionX(self, X):
-        if X >= 0 and X <self.myWorld.floorx:
-            if self.myWorld.floors[self.currentFloor].movableSpace(X, self.ypos):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(X, self.ypos, '@')
+        if X >= 0 and X <NJIT.floorx:
+            if NJIT.floors[self.currentFloor].movableSpace(X, self.ypos):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(X, self.ypos, '@')
                 self.xpos = X;
 
     def moveLeftMany(self, xUnits):
             if self.xpos - xUnits >= 0:
-                    if (self.myWorld.floors[self.currentFloor].movableSpace(self.xpos - xUnits, self.ypos)):
-                            self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                            self.myWorld.floors[self.currentFloor].add(self.xpos - xUnits, self.ypos, '@')
+                    if (NJIT.floors[self.currentFloor].movableSpace(self.xpos - xUnits, self.ypos)):
+                            NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                            NJIT.floors[self.currentFloor].add(self.xpos - xUnits, self.ypos, '@')
                             self.xpos = self.xpos - xUnits;
 
     def moveRightMany(self, xUnits):
-        if self.xpos + xUnits < self.myWorld.floorx:
-            if self.myWorld.movableSpace(self.xpos + xUnits, self.ypos):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(self.xpos + xUnits, self.ypos, '@')
+        if self.xpos + xUnits < NJIT.floorx:
+            if NJIT.movableSpace(self.xpos + xUnits, self.ypos):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos + xUnits, self.ypos, '@')
                 self.xpos = self.xpos + xUnits;
 
     ###
@@ -140,32 +144,40 @@ class Character:
         return self.ypos;
 
     def setPositionY(self, Y):
-        if Y >= 0 and Y < self.myWorld.floory:
-            if self.myWorld.movableSpace(self.xpos, Y):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(self.xpos, Y, '@')
+        if Y >= 0 and Y < NJIT.floory:
+            if NJIT.movableSpace(self.xpos, Y):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos, Y, '@')
                 self.ypos = Y;
 
     def moveUpMany(self, yUnits):
-        if self.ypos + yUnits < self.myWorld.floory:
-            if self.myWorld.movableSpace(self.xpos, self.ypos + yUnits):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(self.xpos, self.ypos + yUnits)
+        if self.ypos + yUnits < NJIT.floory:
+            if NJIT.movableSpace(self.xpos, self.ypos + yUnits):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos, self.ypos + yUnits)
                 self.ypos = self.ypos + yUnits;
 
     def moveDownMany(self, yUnits):
         if self.ypos - yUnits >= 0:
+<<<<<<< Updated upstream
             if self.myWorld.movableSpace(self.xpos, self.ypos - yUnits):
                 self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
                 self.myWorld.floors[self.currentFloor].add(self.xpos, self.ypos - yUnits)
                 self.ypos = self.ypos - yUnits;
 
+=======
+            if NJIT.movableSpace(self.xpos, self.ypos - yUnits):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos, self.ypos - yUnits)
+                self.ypos = self.ypos - yUnits;	
+            
+>>>>>>> Stashed changes
     def moveToLocation(self, x, y):
-        if x >= 0 and x < self.myWorld.floorx:
-            if y >= 0 and y < self.myWorld.floory:
-                if self.myWorld.movableSpace(x,y):
-                    self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                    self.myWorld.floors[self.currentFloor].add(x,y,'@')
+        if x >= 0 and x < NJIT.floorx:
+            if y >= 0 and y < NJIT.floory:
+                if NJIT.movableSpace(x,y):
+                    NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                    JIT.floors[self.currentFloor].add(x,y,'@')
                     self.xpos = x;
                     self.ypos = y;
 
@@ -489,9 +501,9 @@ class room:
         return False
 
 random.seed(0)
-x = world()
-me = Character("Joezack", True, x)
-x.floors[0].drawFloor()
+NJIT = world()
+me = Character("Joezack", True)
+NJIT.floors[0].drawFloor()
 
 while True:
     z = kbfunc()

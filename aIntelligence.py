@@ -108,6 +108,7 @@ class AI():
 			enemy.damaged(self.weapon.weaponMod() * self.strength);
 
 		else:
+                        3+3
 			#todo path to enenmy
 
 	def shouldAttack(self, enemy):
@@ -132,6 +133,7 @@ class AI():
 			print("chasing")
 			self.chaseEnemy(enemy);
 		else:
+                        3+3
 			#todo path to return spot
 
 			
