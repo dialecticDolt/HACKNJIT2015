@@ -57,6 +57,13 @@ class gameState:
 
 gState = gameState(["hey"], 1125);
 
+def kbfunc():
+    x=msvcrt.kbhit()
+    if x:
+        ret = msvcrt.getch()
+    else:
+        ret = False;
+    return ret
 
 class NJITHack(threading.Thread):
     def __init__(self):
@@ -70,13 +77,14 @@ class NJITHack(threading.Thread):
         global lockTurn
         exitFlag = True;
         reallyexitFlag = True;
-        State = 1;
-        while reallyexitFlag
+        State = 1; p= True;
+        os.system("cls")
+        while reallyexitFlag:
             while exitFlag:
                 """
                 STARTING MENU
                 """
-                if State == 1:
+                if State == 1 and p:
                     print(" _   _      _ _____ _______   _    _          _____ _  __".center(100));
                     print("| \ | |    | |_   _|__   __| | |  | |   /\   / ____| |/ /".center(100));
                     print("|  \| |    | | | |    | |    | |__| |  /  \ | |    | ' / ".center(100));
@@ -87,7 +95,8 @@ class NJITHack(threading.Thread):
                     print("Created by Josef Mohrenweiser, Tyler Shuhnicki, and William Ruys".center(100));
                     print("****Single-Player".center(100));
                     print("----Multi-Player".center(100));
-                if State == 2:
+                    p = False;
+                if State == 2 and p:
                     print(" _   _      _ _____ _______   _    _          _____ _  __".center(100));
                     print("| \ | |    | |_   _|__   __| | |  | |   /\   / ____| |/ /".center(100));
                     print("|  \| |    | | | |    | |    | |__| |  /  \ | |    | ' / ".center(100));
@@ -98,10 +107,22 @@ class NJITHack(threading.Thread):
                     print("Created by Josef Mohrenweiser, Tyler Shuhnicki, and William Ruys".center(100));
                     print("----Single-Player".center(100));
                     print("****Multi-Player".center(100));
-                
-                if State == 3:
-                    name = input("Enter your Name".center(100));
+                    p = False;
+                x = kbfunc()
+                if x!= False and x.decode() == 's':
+                    State = 2;
+                    os.system("cls");p = True;
+                if x!= False and x.decode() == 'w' and State != 1:
+                    State =1;
+                    os.system("cls");p = True;
+                if x!= False and x.decode() == '\r':
+                    State =3;
+                    exitFlag = False;
+                else:
+                    time.sleep(0.5);
 
+            if State == 3:
+                s = string(input("Enter your Name".center(100)));
 
 
 
