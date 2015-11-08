@@ -25,8 +25,6 @@ import socket
 import sys
 import os
 import pickle
-import pygame
-import pygcurse
 import msvcrt
 import time
 from world import *
@@ -56,6 +54,11 @@ class gameState:
         self.eList = eList;               """State of all entities"""
         self.wList = wList;               """State of all world things"""
 
+def merge(gameState1, gameState2):
+    gameState2.eList[0] = gameState1.eList[0]
+
+
+
 #def kbfunc():
 #    x=msvcrt.kbhit()
 #    if x:
@@ -80,6 +83,7 @@ class NJITHack(threading.Thread):
         global endFlag
         global gState
         global lockTurn
+        global multiFlag
         exitFlag = True;
         reallyexitFlag = True;
         State = 1; p= True;
@@ -126,7 +130,8 @@ class NJITHack(threading.Thread):
                     else:
                         State=4;
                         multiFlag = True;
-                    exitFlag = False; os.system("cls");
+                    exitFlag = False;
+                    os.system("cls");
                 else:
                     time.sleep(0.01);
             exitFlag = True; p = True;
@@ -174,8 +179,8 @@ class NJITHack(threading.Thread):
             if State == 6:
                 HOST = str(raw_input("Enter the host address:"));
                 State = 3;
-            if State == 3:
-                name = str(raw_input("Enter your name: "));
+            #if State == 3:
+            #    name = str(raw_input("Enter your name: "));
 
 
 
@@ -187,23 +192,47 @@ class NJITHack(threading.Thread):
             """
             Create Map & Initialize World Entities
             """
-
-            """Create GameState"""
             wList = "";
             eList = [];
-            lockState.acquire();
-            gState = gameState(eList, wList);
-            lockState.release();
-            turnFlag = True;
+            if multiFlag:
+                eList.append(Character("Player2", True));
+            eList.append(Character("Player1", True));
+            #Populate eList
+            """Create GameState"""
 
-            """
-            LOOP: START GAME
-            All Actions and End Turn
-            -All interactions
-            -Invetory
-            -Set End Turn Flag on both deaths.
-            """
+            while True:
+                z = kbfunc()
+                if z != False:
+                    if z.decode() == 'w':
+                        eList[isServer].moveUp()
+                    if z.decode() == 's':
+                        eList[isServer].moveDown()
+                    if z.decode() == 'a':
+                        eList[isServer].moveLeft()
+                    if z.decode() == 'd':
+                        eList[isServer].moveRight()
+                    else:
+                        time.sleep(0.01)
+                    """Create GameState"""
+                    eList[isServer].update()
+                    lockState.acquire();
+                    gState = gameState(eList, wList);
+                    lockState.release();
+                    turnFlag = True;
 
+                    if multiFlag:
+                        while turnFlag:
+                            time.sleep(0.01)
+
+                    for e in eList:
+                        e.update()
+                    """
+                    LOOP: START GAME
+                    All Actions and End Turn
+                    -All interactions
+                    -Invetory
+                    -Set End Turn Flag on both deaths.
+                    """
             endFlag = True; #If this is true the game ends;
 
 class Network(threading.Thread):
@@ -233,15 +262,15 @@ class Network(threading.Thread):
                 lockTurn.acquire();
                 if turnFlag:
                     tempState = stateBuffer.pop();
-                    """tempState = tempState.update();"""
+                    tempState = merge(tempState, gState);
                     dataString = pickle.dumps(tempState)
                     client.send(dataString.encode())
+                    turnflag = False;
                 lockTurn.release();
                 lockState.release();
                 if endFlag:
                     client.close();
                     break;
-
         else:
             s.connect((HOST, PORT));
             while True:
@@ -252,6 +281,7 @@ class Network(threading.Thread):
                     s.send(dataString.encode());
                     pickledState = s.recv(1024).decode();
                     stateBuffer.append(pickle.loads(pickledState));
+                    gState = stateBuffer.pop()
                     turnFlag = False;
                     lockState.release();
                 lockTurn.release();

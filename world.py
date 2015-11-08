@@ -5,6 +5,7 @@ import os
 import time
 from Weaponry import *
 from aIntelligence import *
+
 import msvcrt
 
 def kbfunc():
@@ -107,13 +108,9 @@ class Character:
                 NJIT.floors[self.currentFloor].add(self.xpos+1, self.ypos, '@')
                 self.xpos = self.xpos + 1
     def update(self):
-<<<<<<< Updated upstream
-        self.myWorld.floors[self.currentFloor].drawFloor()
-
-=======
         NJIT.floors[self.currentFloor].drawFloor()
-            
->>>>>>> Stashed changes
+
+
     def getPositionX(self):
         return self.xpos;
 
@@ -159,25 +156,25 @@ class Character:
 
     def moveDownMany(self, yUnits):
         if self.ypos - yUnits >= 0:
-<<<<<<< Updated upstream
-            if self.myWorld.movableSpace(self.xpos, self.ypos - yUnits):
-                self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                self.myWorld.floors[self.currentFloor].add(self.xpos, self.ypos - yUnits)
-                self.ypos = self.ypos - yUnits;
 
-=======
             if NJIT.movableSpace(self.xpos, self.ypos - yUnits):
                 NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
                 NJIT.floors[self.currentFloor].add(self.xpos, self.ypos - yUnits)
-                self.ypos = self.ypos - yUnits;	
-            
->>>>>>> Stashed changes
+                self.ypos = self.ypos - yUnits;
+
+
+            if NJIT.movableSpace(self.xpos, self.ypos - yUnits):
+                NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
+                NJIT.floors[self.currentFloor].add(self.xpos, self.ypos - yUnits)
+                self.ypos = self.ypos - yUnits;
+
+
     def moveToLocation(self, x, y):
         if x >= 0 and x < NJIT.floorx:
             if y >= 0 and y < NJIT.floory:
                 if NJIT.movableSpace(x,y):
                     NJIT.floors[self.currentFloor].remove(self.xpos, self.ypos)
-                    JIT.floors[self.currentFloor].add(x,y,'@')
+                    NJIT.floors[self.currentFloor].add(x,y,'@')
                     self.xpos = x;
                     self.ypos = y;
 
@@ -407,8 +404,11 @@ class floor:
             return False
         if x < 0 or x >= self.x:
             return False
+        if self.space[y][x] == 'E' or self.space[y][x] == '@':
+            return False
         if self.space[y][x] != '=':
             return True
+
         return False
 
     def inRoom(self, xpos, ypos):
@@ -502,22 +502,3 @@ class room:
 
 random.seed(0)
 NJIT = world()
-me = Character("Joezack", True)
-NJIT.floors[0].drawFloor()
-
-while True:
-    z = kbfunc()
-
-    if z != False:
-        if z.decode() == 'w':
-            me.moveUp()
-        if z.decode() == 's':
-            me.moveDown()
-        if z.decode() == 'a':
-            me.moveLeft()
-        if z.decode() == 'd':
-            me.moveRight()
-        me.update()
-
-    else:
-        time.sleep(0.1)
