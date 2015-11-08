@@ -82,12 +82,35 @@ class AI():
 	def moveToLocation(self, x, y):
 		self.xPos = x;
 		self.yPos = y;
-	
+
+	def inRangeX(self, enemyPosX):
+		differenceInPosition = self.xPos - enemyPosX;
+		if(abs(differenceInPosition) <= self.weapon.rangeMod()):
+			return True;
+		else:
+			return False;
+
+
+	def inRangeY(self, enemyPosY):
+		differenceInPosition = self.yPos - enemyPosY;
+		if(abs(differenceInPosition) <= self.weapon.rangeMod()):
+			return True;
+		else:
+			return False;
+
 	def printRange(self):
 		print(self.weapon.rangeMod());
 
-#-----------------------------------------------------------------------------------------------------------------------------------------------
 
+#-----------------------------------------------------------------------------------------------------------------------------------------------
+	def chaseEnemy(self, enemy):
+		if(self.inRangeX(enemy.getPositionX()) and self.inRangeY(enemy.getPositionY())):
+			enemy.damaged(self.weapon.weaponMod() * self.strength);
+			print("attacked");
+
+		else:
+			#todo path to enenmy
+			print("path to enemy")
 
 	def shouldAttack(self, enemy):
 		minimumExtraDistance = 3;
@@ -105,22 +128,18 @@ class AI():
 			else:
 				minimumExtraDistance = 0;
 
-		if((enemy.getPositionX <= self.weapon.rangeMod() + minimumExtraDistance) and (enemy.getPositionY <= self.weapon.rangeMod() + minimumExtraDistance)):
+		
+
+		if((enemy.getPositionX() <= self.weapon.rangeMod() + minimumExtraDistance) and (enemy.getPositionY() <= self.weapon.rangeMod() + minimumExtraDistance)):
 			print("chasing")
-			chaseEnemy(enemy);
+			self.chaseEnemy(enemy);
 		else:
 			#todo path to return spot
 			print("path to return");
 
 			
 
-	def chaseEnemy(self, enemy):
-		if((enemy.getPositionX <= self.weapon.rangeMod()) and (enemy.getPositionY <= self.weapon.rangeMod()) and isClearPath()):
-			enemy.damaged(self.weapon.weaponMod() * self.strength);
-			print("attacked")
-		else:
-			#todo path to enenmy
-			print("path to enemy")
+
 
 
 

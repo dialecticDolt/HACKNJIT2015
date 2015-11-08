@@ -154,11 +154,8 @@ class Character:
 		
 
 	
-	
-
-
 x = Character("x",0,0,True);
-y = AI(11,11);
+y = AI(6,6);
 
 y.shouldAttack(x);
 
