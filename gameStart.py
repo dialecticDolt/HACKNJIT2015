@@ -46,7 +46,7 @@ lockisServer = threading.Lock();
 lockState = threading.Lock();
 
 stateBuffer = []; """Store all the turns that have happened locally"""
-
+statusBuffer = ""; """Description of Past Action"""
 
 class gameState:
     """This is what is communicated across the network"""
@@ -55,8 +55,6 @@ class gameState:
         self.eList = eList;               """State of all entities"""
         self.wList = wList;               """State of all world things"""
 
-gState = gameState(["hey"], 1125);
-
 def kbfunc():
     x=msvcrt.kbhit()
     if x:
@@ -64,6 +62,12 @@ def kbfunc():
     else:
         ret = False;
     return ret
+
+def invScreen():
+    """DONT NEED THIS"""
+def statScreen():
+    """WAITING ON TYLER CODE"""
+    print()
 
 class NJITHack(threading.Thread):
     def __init__(self):
@@ -121,10 +125,10 @@ class NJITHack(threading.Thread):
                     else:
                         State=4;
                         multiFlag = True;
-                    exitFlag = False;
+                    exitFlag = False; os.system("cls");
                 else:
-                    time.sleep(0.1);
-            exitFlag = True; p = True; os.system("cls");
+                    time.sleep(0.01);
+            exitFlag = True; p = True;
             while exitFlag:
                 if State == 4 and p:
                     print(" _   _      _ _____ _______   _    _          _____ _  __".center(100));
@@ -162,12 +166,15 @@ class NJITHack(threading.Thread):
                         isServer = True;
                     else:
                         isServer = False;
+                        State = 6;
                     exitFlag = False; State = 3; break;
                 else:
-                    time.sleep(0.1);
-
+                    time.sleep(0.01);
+            if State == 6:
+                HOST = str(raw_input("Enter the host address:"));
+                State = 3;
             if State == 3:
-                s = str(raw_input("Enter your Name: "));
+                name = str(raw_input("Enter your name: "));
 
 
 
@@ -181,25 +188,19 @@ class NJITHack(threading.Thread):
             """
 
             """Create GameState"""
-
-            """
-            Start Server Listening
-            -Server starts waiting
-            -Client will send signal if turnFlag is set
-            -Server will send response on its turnFlag & recieve
-            -
-            """
-
+            wList = "";
+            eList = [];
+            lockState.acquire();
+            gState = gameState(eList, wList);
+            lockState.release();
             """
             All Actions and End Turn
             -All interactions
             -Invetory
             -Set End Turn Flag
             """
-            #lockEnd.acquire()
-            endFlag = 1;
-            #lockEnd.release();
-        return;
+
+            endFlag = True; #If this is true the game ends;
 
 class Network(threading.Thread):
     def __init__(self):
@@ -213,42 +214,37 @@ class Network(threading.Thread):
         global gState
         global lockTurn
         global lockEnd
-       # msg = "";
         s = socket.socket();
         dataString = pickle.dumps(gState);   #what ever state to send
 
         if isServer:
-            #try:
             s.bind(("", PORT))
-          #  except (s.error , msg):
-           #     print ('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
-          #      sys.exit()
             s.listen(1)
             client, addr = s.accept()
             print("Server is Listening");
             while True:
+                lockState.acquire();
                 pickledState = client.recv(1024).decode()
                 stateBuffer.append(pickle.loads(pickledState));
                 lockTurn.acquire();
                 if turnFlag:
-                    lockState.acquire();
                     tempState = stateBuffer.pop();
                     """tempState = tempState.update();"""
                     dataString = pickle.dumps(tempState)
                     client.send(dataString.encode())
-                    lockState.release();
                 lockTurn.release();
+                lockState.release();
                 if endFlag:
                     client.close();
                     break;
 
         else:
-
             s.connect((HOST, PORT));
             while True:
                 lockTurn.acquire();
                 if turnFlag:
                     lockState.acquire()
+                    dataString = pickle.dumps(gState);
                     s.send(dataString.encode());
                     pickledState = s.recv(1024).decode();
                     stateBuffer.append(pickle.loads(pickledState));
@@ -257,7 +253,6 @@ class Network(threading.Thread):
                 lockTurn.release();
                 if endFlag:
                     break;
-                return;
 
 thread1 = NJITHack();
 if multiFlag:
