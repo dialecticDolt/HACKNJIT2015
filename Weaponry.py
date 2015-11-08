@@ -92,7 +92,7 @@ class Armor():
 			self.armorBonus = 0;
 			
 		self.armorBonus = self.armorBonus - damage;
-		return (self.armorBonus > 0: 0 ? self.armorBonus);
+		return (0 if self.armorBonus > 0 else self.armorBonus);
 	
 	def getArmor(self):
 		if self.armorBonus < 0:

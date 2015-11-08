@@ -1,6 +1,7 @@
 import time
 import random
 from Weaponry import * 
+
 class Character:
 
 	#leagilistic attributes
@@ -22,37 +23,37 @@ class Character:
 	weapon = Weapon();
 	armor = Armor();
 
-	def __init__(self, xPos, yPos, isAlive):
+	def __init__(self, xPos, yPos, isAlive, strength = 0, dexterity = 0, charisma = 0, luck = 0, intelligence = 0, wisdom = 0):
 		#assign legalistic attributes
 		self.xPos = xPos
 		self.yPos = yPos;
 		self.isAlive = isAlive;
 
 		#randomly generate char attributes
-		self.strength = random.randint(1,10);
-		self.dexterity = random.randint(1,10);
-		self.charisma = random.randint(1,10);
-		self.luck = random.randint(1,10);
-		self.intelligence = random.randint(1,10);
-		self.wisdom = random.randint(1,10);
+		self.strength = random.randint(1,10) if strength == 0 else strength;
+		self.dexterity = random.randint(1,10) if dexterity == 0 else dexterity;
+		self.charisma = random.randint(1,10) if charisma == 0 else charisma;
+		self.luck = random.randint(1,10) if luck == 0 else luck;
+		self.intelligence = random.randint(1,10) if intelligence == 0 else intelligence;
+		self.wisdom = random.randint(1,10) if wisdom == 0 else wisdom;
 		self.health = 300;
 
 	def printAttr(self):
 		#quickly prints all attributes
 		print(self.strength);
 		print(self.dexterity);
+		print(self.charisma);
 		print(self.luck);
 		print(self.intelligence);
 		print(self.wisdom);
-		print(self.constitution);
 #--------------------------------------------------------------------------------------------------------------------------------------
 	#moving functions
 
 	def getPositionX(self):
 		return self.xPos;
-	
-	def getPositionY(self):
-		return self.yPos;
+
+	def setPositionX(self, X):
+		self.xPos = X;	
 
 	def moveLeftOne(self):
 		self.xPos = self.xPos - 1;
@@ -65,25 +66,25 @@ class Character:
 	
 	def moveRight(self, xUnits):
 		self.xPos = self.xPos + xUnits;
-	
-	def setAxisX(self, X):
-		self.xPos = X;	
+
+	def getPositionY(self):
+		return self.yPos;
+
+	def setPositionY(self, Y):
+		self.yPos = Y;
 	
 	def moveUpOne(self):
 		self.yPos = self.yPos + 1;
 	
 	def moveDownOne(self):
 		self.yPos = self.yPos - 1;
-	
+
 	def moveUp(self, yUnits):
 		self.yPos = self.yPos + yUnits;
 
 	def moveDown(self, yUnits):
-		self.yPos = self.yPos - yUnits;
-	
-	def setAxisY(self, Y):
-		self.yPos = Y;
-	
+		self.yPos = self.yPos - yUnits;	
+		
 	def moveToLocation(self, x, y):
 		self.xPos = x;
 		self.yPos = y;
@@ -125,17 +126,34 @@ class Character:
 	def addArmor(self):
 		self.armor.addArmor();
 
+	def changeStrength(self, strAdd):
+		self.strength = self.strength + strAdd;
+	
+	def changeDexterity(self, dexAdd):
+		self.dexterity = self.dexterity + dexAdd;
+
+	def changeCharisma(self, charAdd):
+		self.charisma = self.charisma + charAdd;
+	
+	def changeLuck(self, luckAdd):
+		self.luck = self.luck + luckAdd;
+	
+	def changeIntelligence(self, intAdd):
+		self.intelligence = self.intelligence + intAdd;
+	
+	def changeWisdom(self, wisAdd):
+		self.wisdom = self.wisdom + wisAdd;
+
+
+#----------------------------------------------------------------------------------------------------------------------------------		
+
+		
+
 	
 	
 
 x = Character(0,0,True);
-x.addArmor();
-x.addArmor();
-x.addArmor();
-x.addArmor();
-x.damaged(125);
-print(x.getArmor());
-print(x.getHealth());
+
 
 
 		
