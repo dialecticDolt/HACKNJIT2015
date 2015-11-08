@@ -1,6 +1,5 @@
 import random
 from Weaponry import *
-from character import *
 
 class AI():
 	
@@ -15,7 +14,7 @@ class AI():
 	dexterity = 0;
 	resolve = 0;
 
-	def __init__(self, startX, startY, weaponChoice = 0, strength = 0, dexterity = 0, resolve = 0)
+	def __init__(self, startX, startY, weaponChoice = 0, strength = 0, dexterity = 0, resolve = 0):
 
 		self.startX = startX;
 		self.startY = startY;
@@ -25,20 +24,22 @@ class AI():
 		self.dexterity = random.randint(1,10) if dexterity == 0 else dexterity;
 		self.resolve = random.randint(6,10) if resolve == 0 else resolve;
 
-		self.weaponChoice = weaponChoice if weaponChoice > 0 else self.weaponChoice()
+		self.weaponChoice = weaponChoice if weaponChoice > 0 else self.weaponChoice
+
+		print(self.weaponChoice);	
 
 		if(self.weaponChoice == 1):
 			self.weapon = shortSword();
 		elif(self.weaponChoice == 2):
 			self.weapon = longSword();
 		elif(self.weaponChoice == 3):
-			self.weapon = Bow():
+			self.weapon = Bow();
 		elif(self.weaponChoice == 4):
 			self.weapon = Mace();
 		elif(self.weaponChoice == 5):
 			self.weapon = Spear();
-		else:
-			self.weapon == Dagger();
+		elif(self.weaponChoice == 6):
+			self.weapon = Dagger();
 
 #---------------------------------------------------------------------------------------------------------------------------------------			
 
@@ -81,6 +82,9 @@ class AI():
 	def moveToLocation(self, x, y):
 		self.xPos = x;
 		self.yPos = y;
+	
+	def printRange(self):
+		print(self.weapon.rangeMod());
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -94,24 +98,30 @@ class AI():
 
 			if(enemy.charisma == self.resolve):
 				minimumExtraDistance = 2;
+
 			elif(enemy.charisma == self.resolve + 1):
 				minimumExtraDistance = 1;
-			else
-				minimumExtraDistance = 0;
-
-			if((enemy.getPositionX <= self.weapon.rangeMod + minimumExtraDistance) and (enemy.getPositionY <= self.weapon.rangeMod + minimumExtraDistance)):
-				chaseEnemy(enemy);
 
 			else:
-				#todo path to return spot
+				minimumExtraDistance = 0;
+
+		if((enemy.getPositionX <= self.weapon.rangeMod() + minimumExtraDistance) and (enemy.getPositionY <= self.weapon.rangeMod() + minimumExtraDistance)):
+			print("chasing")
+			chaseEnemy(enemy);
+		else:
+			#todo path to return spot
+			print("path to return");
 
 			
 
 	def chaseEnemy(self, enemy):
-		if((enemy.getPositionX <= self.weapon.rangeMod) and (enemy.getPositionY <= self.weapon.rangeMod) and isClearPath()):
+		if((enemy.getPositionX <= self.weapon.rangeMod()) and (enemy.getPositionY <= self.weapon.rangeMod()) and isClearPath()):
 			enemy.damaged(self.weapon.weaponMod() * self.strength);
-		else
+			print("attacked")
+		else:
 			#todo path to enenmy
+			print("path to enemy")
+
 
 
 			

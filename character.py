@@ -1,13 +1,15 @@
 import time
 import random
 from Weaponry import * 
+from aIntelligence import *
 
 class Character:
 
 	#leagilistic attributes
+	name = "";
 	yPos = 0; #x position
 	xPos = 0; #y position
-	charID = time.time(); #get unique 11 digit timestamp as an id. hopefully they wont collide
+	charID = time.time(); 
 	isAlive = False;
 
 	#character attributes
@@ -23,11 +25,13 @@ class Character:
 	weapon = Weapon();
 	armor = Armor();
 
-	def __init__(self, xPos, yPos, isAlive, strength = 0, dexterity = 0, charisma = 0, luck = 0, intelligence = 0, wisdom = 0):
+	def __init__(self, name, xPos, yPos, isAlive, strength = 0, dexterity = 0, charisma = 0, luck = 0, intelligence = 0, wisdom = 0):
 		#assign legalistic attributes
+		self.name = name;
 		self.xPos = xPos
 		self.yPos = yPos;
 		self.isAlive = isAlive;
+		self.charID = self.charID * reduce(lambda x, y: (x<<8)+ord(y), self.name, 0) #not really sure what this lamba does. it converts the name into a randomish number
 
 		#randomly generate char attributes
 		self.strength = random.randint(1,10) if strength == 0 else strength;
@@ -152,7 +156,11 @@ class Character:
 	
 	
 
-x = Character(0,0,True);
+
+x = Character("x",0,0,True);
+y = AI(11,11);
+
+y.shouldAttack(x);
 
 
 
