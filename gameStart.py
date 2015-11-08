@@ -194,11 +194,13 @@ class NJITHack(threading.Thread):
             gState = gameState(eList, wList);
             lockState.release();
             turnFlag = True;
+
             """
+            LOOP: START GAME
             All Actions and End Turn
             -All interactions
             -Invetory
-            -Set End Turn Flag
+            -Set End Turn Flag on both deaths.
             """
 
             endFlag = True; #If this is true the game ends;
