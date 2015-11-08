@@ -116,13 +116,58 @@ class NJITHack(threading.Thread):
                     State =1;
                     os.system("cls");p = True;
                 if x!= False and x.decode() == '\r':
-                    State =3;
+                    if State ==1:
+                        State =3;
+                    else:
+                        State=4;
+                        multiFlag = True;
                     exitFlag = False;
                 else:
-                    time.sleep(0.5);
+                    time.sleep(0.1);
+            exitFlag = True; p = True; os.system("cls");
+            while exitFlag:
+                if State == 4 and p:
+                    print(" _   _      _ _____ _______   _    _          _____ _  __".center(100));
+                    print("| \ | |    | |_   _|__   __| | |  | |   /\   / ____| |/ /".center(100));
+                    print("|  \| |    | | | |    | |    | |__| |  /  \ | |    | ' / ".center(100));
+                    print("| . ` |_   | | | |    | |    |  __  | / /\ \| |    |  <  ".center(100));
+                    print("| |\  | |__| |_| |_   | |    | |  | |/ ____ \ |____| . \ ".center(100));
+                    print("|_| \_|\____/|_____|  |_|    |_|  |_/_/    \_\_____|_|\_\ ".center(100));
+                    print("==========================================================".center(100));
+                    print("Created by Josef Mohrenweiser, Tyler Shuhnicki, and William Ruys".center(100));
+                    print("****Server".center(100));
+                    print("----Client".center(100));
+                    p = False;
+                if State == 5 and p:
+                    print(" _   _      _ _____ _______   _    _          _____ _  __".center(100));
+                    print("| \ | |    | |_   _|__   __| | |  | |   /\   / ____| |/ /".center(100));
+                    print("|  \| |    | | | |    | |    | |__| |  /  \ | |    | ' / ".center(100));
+                    print("| . ` |_   | | | |    | |    |  __  | / /\ \| |    |  <  ".center(100));
+                    print("| |\  | |__| |_| |_   | |    | |  | |/ ____ \ |____| . \ ".center(100));
+                    print("|_| \_|\____/|_____|  |_|    |_|  |_/_/    \_\_____|_|\_\ ".center(100));
+                    print("==========================================================".center(100));
+                    print("Created by Josef Mohrenweiser, Tyler Shuhnicki, and William Ruys".center(100));
+                    print("----Server".center(100));
+                    print("****Client".center(100));
+                    p = False;
+                x = kbfunc()
+                if x!= False and x.decode() == 's':
+                    State = 5;
+                    os.system("cls");p = True;
+                if x!= False and x.decode() == 'w' and State != 4:
+                    State =4;
+                    os.system("cls");p = True;
+                if x!= False and x.decode() == '\r':
+                    if State ==4:
+                        isServer = True;
+                    else:
+                        isServer = False;
+                    exitFlag = False; State = 3; break;
+                else:
+                    time.sleep(0.1);
 
             if State == 3:
-                s = string(input("Enter your Name: "));
+                s = str(raw_input("Enter your Name: "));
 
 
 
@@ -215,8 +260,10 @@ class Network(threading.Thread):
                 return;
 
 thread1 = NJITHack();
-thread2 = Network();
+if multiFlag:
+    thread2 = Network();
 thread1.start();
-thread2.start();
+if multiFlag:
+    thread2.start();
 #print("Done")
 sys.exit();
