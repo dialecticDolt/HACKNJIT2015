@@ -193,6 +193,7 @@ class NJITHack(threading.Thread):
             lockState.acquire();
             gState = gameState(eList, wList);
             lockState.release();
+            turnFlag = True;
             """
             All Actions and End Turn
             -All interactions
