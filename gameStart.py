@@ -29,6 +29,7 @@ import pygame
 import pygcurse
 import msvcrt
 import time
+from world import *
 
 endFlag = False;
 isServer = True;
@@ -55,13 +56,13 @@ class gameState:
         self.eList = eList;               """State of all entities"""
         self.wList = wList;               """State of all world things"""
 
-def kbfunc():
-    x=msvcrt.kbhit()
-    if x:
-        ret = msvcrt.getch()
-    else:
-        ret = False;
-    return ret
+#def kbfunc():
+#    x=msvcrt.kbhit()
+#    if x:
+#        ret = msvcrt.getch()
+#    else:
+#        ret = False;
+#    return ret
 
 def invScreen():
     """DONT NEED THIS"""

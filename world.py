@@ -3,7 +3,7 @@ import sys
 import math
 import os
 import time
-from Weaponry import * 
+from Weaponry import *
 from aIntelligence import *
 import msvcrt
 
@@ -31,7 +31,7 @@ class Character:
     name = "";
     yPos = 0; #x position
     xPos = 0; #y position
-    charID = time.time(); 
+    charID = time.time();
     isAlive = False;
 
     #character attributes
@@ -41,9 +41,9 @@ class Character:
     luck = 0;
     intelligence = 0;
     wisdom = 0;
-    
+
     #combat related attributes
-    health = 300; #default health	
+    health = 300; #default health
     weapon = Weapon();
     armor = Armor();
 
@@ -109,7 +109,7 @@ class Character:
                 self.xpos = self.xpos + 1
     def update(self):
         self.myWorld.floors[self.currentFloor].drawFloor()
-            
+
     def getPositionX(self):
         return self.xpos;
 
@@ -126,7 +126,7 @@ class Character:
                             self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
                             self.myWorld.floors[self.currentFloor].add(self.xpos - xUnits, self.ypos, '@')
                             self.xpos = self.xpos - xUnits;
-    
+
     def moveRightMany(self, xUnits):
         if self.xpos + xUnits < self.myWorld.floorx:
             if self.myWorld.movableSpace(self.xpos + xUnits, self.ypos):
@@ -134,8 +134,8 @@ class Character:
                 self.myWorld.floors[self.currentFloor].add(self.xpos + xUnits, self.ypos, '@')
                 self.xpos = self.xpos + xUnits;
 
-    ###		
-                    
+    ###
+
     def getPositionY(self):
         return self.ypos;
 
@@ -158,8 +158,8 @@ class Character:
             if self.myWorld.movableSpace(self.xpos, self.ypos - yUnits):
                 self.myWorld.floors[self.currentFloor].remove(self.xpos, self.ypos)
                 self.myWorld.floors[self.currentFloor].add(self.xpos, self.ypos - yUnits)
-                self.ypos = self.ypos - yUnits;	
-            
+                self.ypos = self.ypos - yUnits;
+
     def moveToLocation(self, x, y):
         if x >= 0 and x < self.myWorld.floorx:
             if y >= 0 and y < self.myWorld.floory:
@@ -168,38 +168,38 @@ class Character:
                     self.myWorld.floors[self.currentFloor].add(x,y,'@')
                     self.xpos = x;
                     self.ypos = y;
-		
-#-------------------------------------------------------------------------------------------------------------------------------------------	
+
+#-------------------------------------------------------------------------------------------------------------------------------------------
     #weapon stuff
-    
+
     def pickUpWeapon(self,newWeapon):
         self.weapon = newWeapon
-    
+
     def dropWeapon(self):
         self.weapon = Weapon();
 
-            
+
     def attack(self):
         return self.strength*self.weapon.weaponMod();
-    
+
     def attackSpeed(self):
-        #attackSpeed will be 1-30. 
+        #attackSpeed will be 1-30.
         #dexterity and weapon agility play a role. This is essentially a measure of how fast one can attack
         return self.dexterity*self.weapon.speedMod();
-    
+
     def attackRange(self):
         return self.weapon.rangeMod();
 
     def damaged(self, damageTaken):
         self.health = self.health + self.armor.damageArmor(damageTaken); #only returns a value if damage exceeds armor. that value should always be negative
 
-    
+
     def heal(self, damageHealed):
         self.health = self.health + damagedHealed;
-    
+
     def getHealth(self):
         return self.health;
-    
+
     def getArmor(self):
         return self.armor.getArmor();
 
@@ -208,19 +208,19 @@ class Character:
 
     def changeStrength(self, strAdd):
         self.strength = self.strength + strAdd;
-    
+
     def changeDexterity(self, dexAdd):
         self.dexterity = self.dexterity + dexAdd;
 
     def changeCharisma(self, charAdd):
         self.charisma = self.charisma + charAdd;
-    
+
     def changeLuck(self, luckAdd):
         self.luck = self.luck + luckAdd;
-    
+
     def changeIntelligence(self, intAdd):
         self.intelligence = self.intelligence + intAdd;
-    
+
     def changeWisdom(self, wisAdd):
         self.wisdom = self.wisdom + wisAdd;
 
@@ -353,13 +353,13 @@ class floor:
             if x2 == x1 and y2 == y1:
                 break
         return mainList
-        
+
     def pathFindingHelper(self, x1, y1, x2, y2):
         mainList = [[x1,y1,0]]
         count = 1
         for n in mainList:
             temp = [[n[0]+1,n[1],count],[n[0]-1,n[1],count],[n[0],n[1]+1,count],[n[0],n[1]-1,count]]
-            
+
             for i in temp:
                 add = True
                 if i[0] == x2 and i[1] == y2:
@@ -379,7 +379,7 @@ class floor:
                 if add:
                     mainList.append(i)
             count += 1
-                        
+
 
     def validSpace(self, x, y):
         if y < 0 or y >= self.y:
@@ -398,7 +398,7 @@ class floor:
         if self.space[y][x] != '=':
             return True
         return False
-            
+
     def inRoom(self, xpos, ypos):
         for i in range(0, self.roomnum):
             if (self.rooms[i]).inRoom(xpos,ypos):
@@ -425,7 +425,7 @@ class floor:
             line += '+'
             print(line)
         print '+'*((self.x)+2)
-            
+
 
 class room:
     def __init__(self):
@@ -449,7 +449,7 @@ class room:
         roomOneRightEdge = self.centerx + (self.sizex-1)/2;
         roomOneTopEdge = self.centery + (self.sizey-1)/2;
         roomOneBotEdge = self.centery - (self.sizey-1)/2;
-        
+
         roomTwoLeftEdge = room2.centerx - (room2.sizex-1)/2;
         roomTwoRightEdge = room2.centerx + (room2.sizex-1)/2;
         roomTwoTopEdge = room2.centery + (room2.sizey-1)/2;
@@ -487,7 +487,7 @@ class room:
             if xpos <= self.centerx + (self.sizex-1)/2 and xpos >= self.centerx - (self.sizex-1)/2:
                 return True
         return False
-            
+
 random.seed(0)
 x = world()
 me = Character("Joezack", True, x)
@@ -506,7 +506,6 @@ while True:
         if z.decode() == 'd':
             me.moveRight()
         me.update()
-        
+
     else:
         time.sleep(0.1)
-
